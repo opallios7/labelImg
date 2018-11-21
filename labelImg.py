@@ -45,7 +45,7 @@ from libs.yolo_io import TXT_EXT
 from libs.ustr import ustr
 from libs.version import __version__
 
-__appname__ = 'labelImg'
+__appname__ = (u'롯데홈쇼핑 학습데이터 추출 프로그램') # 'labelImg'
 
 # Utility functions and classes.
 
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow, WindowMixin):
         listLayout.setContentsMargins(0, 0, 0, 0)
 
         # Create a widget for using default label
-        self.useDefaultLabelCheckbox = QCheckBox(u'Use default label')
+        self.useDefaultLabelCheckbox =  QCheckBox(u'고정사용 레이블') # QCheckBox(u'Use default label')
         self.useDefaultLabelCheckbox.setChecked(False)
         self.defaultLabelTextLine = QLineEdit()
         useDefaultLabelQHBoxLayout = QHBoxLayout()
@@ -163,8 +163,9 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelList.itemChanged.connect(self.labelItemChanged)
         listLayout.addWidget(self.labelList)
 
-        self.dock = QDockWidget(u'Box Labels', self)
-        self.dock.setObjectName(u'Labels')
+        self.dock = QDockWidget(u'영역 레이블', self) # QDockWidget(u'Box Labels', self)
+        self.dock.setObjectName(u'레이블')
+        # self.dock.setObjectName(u'Labels')
         self.dock.setWidget(labelListContainer)
 
         # Tzutalin 20160906 : Add file list and dock to move faster
@@ -175,8 +176,9 @@ class MainWindow(QMainWindow, WindowMixin):
         filelistLayout.addWidget(self.fileListWidget)
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
-        self.filedock = QDockWidget(u'File List', self)
-        self.filedock.setObjectName(u'Files')
+        self.filedock = QDockWidget(u'파일목록', self) # QDockWidget(u'File List', self)
+        self.filedock.setObjectName(u'파일')
+        # self.filedock.setObjectName(u'Files')
         self.filedock.setWidget(fileListContainer)
 
         self.zoomWidget = ZoomWidget()
@@ -212,72 +214,72 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Actions
         action = partial(newAction, self)
-        quit = action('&Quit', self.close,
-                      'Ctrl+Q', 'quit', u'Quit application')
+        quit = action(u'종료', self.close,
+                      'Ctrl+Q', 'quit', u'프로그램 종료')
 
-        open = action('&Open', self.openFile,
-                      'Ctrl+O', 'open', u'Open image or label file')
+        open = action(u'열기', self.openFile,
+                      'Ctrl+O', 'open', u'이미지 또는 레이블 파일 열기')
 
-        opendir = action('&Open Dir', self.openDirDialog,
-                         'Ctrl+u', 'open', u'Open Dir')
+        opendir = action(u'폴더 열기', self.openDirDialog,
+                         'Ctrl+u', 'open', u'폴더 열기')
 
-        changeSavedir = action('&Change Save Dir', self.changeSavedirDialog,
-                               'Ctrl+r', 'open', u'Change default saved Annotation dir')
+        changeSavedir = action(u'레이블저장\n경로설정', self.changeSavedirDialog,
+                               'Ctrl+r', 'save', u'기본적으로 설정된 레이블 저장 경로 변경')
 
-        openAnnotation = action('&Open Annotation', self.openAnnotationDialog,
-                                'Ctrl+Shift+O', 'open', u'Open Annotation')
+        openAnnotation = action(u'레이블 열기', self.openAnnotationDialog,
+                                'Ctrl+Shift+O', 'open', u'레이블이 설정된 파일 열기')
 
-        openNextImg = action('&Next Image', self.openNextImg,
-                             'd', 'next', u'Open Next')
+        openNextImg = action(u'다음 이미지', self.openNextImg,
+                             'd', 'next', u'폴더를 오픈한 경우 다음 파일 열기')
 
-        openPrevImg = action('&Prev Image', self.openPrevImg,
-                             'a', 'prev', u'Open Prev')
+        openPrevImg = action(u'이전 이미지', self.openPrevImg,
+                             'a', 'prev', u'폴더를 오픈한 경우 이전 파일 열기')
 
-        verify = action('&Verify Image', self.verifyImg,
-                        'space', 'verify', u'Verify Image')
+        verify = action(u'이미지 검증', self.verifyImg,
+                        'space', 'verify', u'레이블이 존재여부에 대한 확인')
 
-        save = action('&Save', self.saveFile,
-                      'Ctrl+S', 'save', u'Save labels to file', enabled=False)
+        save = action(u'레이블 저장', self.saveFile,
+                      'Ctrl+S', 'save', u'레이블을 파일로 저장', enabled=False)
 
-        save_format = action('&PascalVOC', self.change_format,
-                      'Ctrl+', 'format_voc', u'Change save format', enabled=True)
+        save_format = action(u'PascalVOC 형태', self.change_format,
+                      'Ctrl+', 'format_voc', u'레이블 형태 변경 (기본 : PascalVOC)', enabled=True)
 
-        saveAs = action('&Save As', self.saveFileAs,
-                        'Ctrl+Shift+S', 'save-as', u'Save labels to a different file', enabled=False)
+        saveAs = action(u'다른이름으로 \n저장', self.saveFileAs,
+                        'Ctrl+Shift+S', 'save-as', u'레이블을 다른 이름 파일로 저장', enabled=False)
 
-        close = action('&Close', self.closeFile, 'Ctrl+W', 'close', u'Close current file')
+        close = action(u'닫기', self.closeFile, 'Ctrl+W', 'close', u'현재 파일 닫기')
 
-        resetAll = action('&ResetAll', self.resetAll, None, 'resetall', u'Reset all')
+        resetAll = action(u'화면초기화', self.resetAll, None, 'resetall', u'화면 초기화')
 
-        color1 = action('Box Line Color', self.chooseColor1,
-                        'Ctrl+L', 'color_line', u'Choose Box line color')
+        color1 = action(u'영역 선 색상', self.chooseColor1,
+                        'Ctrl+L', 'color_line', u'영역 선택 선에 대한 색상을 변경')
 
-        createMode = action('Create\nRectBox', self.setCreateMode,
-                            'w', 'new', u'Start drawing Boxs', enabled=False)
-        editMode = action('&Edit\nRectBox', self.setEditMode,
-                          'Ctrl+J', 'edit', u'Move and edit Boxs', enabled=False)
+        createMode = action(u'영역생성 모드', self.setCreateMode,
+                            'w', 'new', u'영역 생성을 하는 설정', enabled=False)
+        editMode = action(u'&영역수정 모드', self.setEditMode,
+                          'Ctrl+J', 'edit', u'영역 이동 및 수정을 하는 설정', enabled=False)
 
-        create = action('Create\nRectBox', self.createShape,
-                        'w', 'new', u'Draw a new Box', enabled=False)
-        delete = action('Delete\nRectBox', self.deleteSelectedShape,
-                        'Delete', 'delete', u'Delete', enabled=False)
-        copy = action('&Duplicate\nRectBox', self.copySelectedShape,
-                      'Ctrl+D', 'copy', u'Create a duplicate of the selected Box',
+        create = action(u'영역 생성', self.createShape,
+                        'w', 'new', u'새로운 영역을 생성', enabled=False)
+        delete = action(u'영역 삭제', self.deleteSelectedShape,
+                        'Delete', 'delete', u'선택된 영역을 삭제', enabled=False)
+        copy = action(u'영역 복사', self.copySelectedShape,
+                      'Ctrl+D', 'copy', u'선택한 영역과 동일한 영역 생성',
                       enabled=False)
 
-        advancedMode = action('&Advanced Mode', self.toggleAdvancedMode,
-                              'Ctrl+Shift+A', 'expert', u'Switch to advanced mode',
+        advancedMode = action(u'전문가 모드', self.toggleAdvancedMode,
+                              'Ctrl+Shift+A', 'expert', u'전문가 모드로 전환',
                               checkable=True)
 
-        hideAll = action('&Hide\nRectBox', partial(self.togglePolygons, False),
-                         'Ctrl+H', 'hide', u'Hide all Boxs',
+        hideAll = action(u'영역 숨기기', partial(self.togglePolygons, False),
+                         'Ctrl+H', 'hide', u'모든 영역을 숨김',
                          enabled=False)
-        showAll = action('&Show\nRectBox', partial(self.togglePolygons, True),
-                         'Ctrl+A', 'hide', u'Show all Boxs',
+        showAll = action(u'영역 보이기', partial(self.togglePolygons, True),
+                         'Ctrl+A', 'hide', u'모든 영역을 보임',
                          enabled=False)
 
-        help = action('&Tutorial', self.showTutorialDialog, None, 'help', u'Show demos')
-        showInfo = action('&Information', self.showInfoDialog, None, 'help', u'Information')
+        help = action(u'튜토리얼', self.showTutorialDialog, None, 'help', u'튜토리얼')
+        showInfo = action(u'정보', self.showInfoDialog, None, 'help', u'정보')
 
         zoom = QWidgetAction(self)
         zoom.setDefaultWidget(self.zoomWidget)
@@ -287,17 +289,17 @@ class MainWindow(QMainWindow, WindowMixin):
                                              fmtShortcut("Ctrl+Wheel")))
         self.zoomWidget.setEnabled(False)
 
-        zoomIn = action('Zoom &In', partial(self.addZoom, 10),
-                        'Ctrl++', 'zoom-in', u'Increase zoom level', enabled=False)
-        zoomOut = action('&Zoom Out', partial(self.addZoom, -10),
-                         'Ctrl+-', 'zoom-out', u'Decrease zoom level', enabled=False)
-        zoomOrg = action('&Original size', partial(self.setZoom, 100),
-                         'Ctrl+=', 'zoom', u'Zoom to original size', enabled=False)
-        fitWindow = action('&Fit Window', self.setFitWindow,
-                           'Ctrl+F', 'fit-window', u'Zoom follows window size',
+        zoomIn = action(u'확대', partial(self.addZoom, 10),
+                        'Ctrl++', 'zoom-in', u'이미지 확대', enabled=False)
+        zoomOut = action(u'축소', partial(self.addZoom, -10),
+                         'Ctrl+-', 'zoom-out', u'이미지 축소', enabled=False)
+        zoomOrg = action(u'원래크기', partial(self.setZoom, 100),
+                         'Ctrl+=', 'zoom', u'이미지 원래크기로', enabled=False)
+        fitWindow = action(u'윈도우에 맞게', self.setFitWindow,
+                           'Ctrl+F', 'fit-window', u'윈도우 크기에 맞게 이미지 조정',
                            checkable=True, enabled=False)
-        fitWidth = action('Fit &Width', self.setFitWidth,
-                          'Ctrl+Shift+F', 'fit-width', u'Zoom follows window width',
+        fitWidth = action(u'넓이에 맞게', self.setFitWidth,
+                          'Ctrl+Shift+F', 'fit-width', u'윈도우 넓이에 맞게 이미지 조정',
                           checkable=True, enabled=False)
         # Group zoom controls into a list for easier toggling.
         zoomActions = (self.zoomWidget, zoomIn, zoomOut,
@@ -310,20 +312,20 @@ class MainWindow(QMainWindow, WindowMixin):
             self.MANUAL_ZOOM: lambda: 1,
         }
 
-        edit = action('&Edit Label', self.editLabel,
-                      'Ctrl+E', 'edit', u'Modify the label of the selected Box',
+        edit = action(u'&레이블 수정', self.editLabel, 
+                      'Ctrl+E', 'labels', u'선택된 영역의 레이블을 수정',
                       enabled=False)
         self.editButton.setDefaultAction(edit)
 
-        shapeLineColor = action('Shape &Line Color', self.chshapeLineColor,
-                                icon='color_line', tip=u'Change the line color for this specific shape',
+        shapeLineColor = action(u'영역 선 색상', self.chshapeLineColor,
+                                icon='color_line', tip=u'레이블 영역 선의 색상을 변경',
                                 enabled=False)
-        shapeFillColor = action('Shape &Fill Color', self.chshapeFillColor,
-                                icon='color', tip=u'Change the fill color for this specific shape',
+        shapeFillColor = action(u'영역 채우기 색상', self.chshapeFillColor,
+                                icon='color', tip=u'레이블 영역 면 채우기 색상을 변경',
                                 enabled=False)
 
         labels = self.dock.toggleViewAction()
-        labels.setText('Show/Hide Label Panel')
+        labels.setText(u'레이블 패널 보이기/숨기기')
         labels.setShortcut('Ctrl+Shift+L')
 
         # Lavel list context menu.
@@ -334,7 +336,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.popLabelListMenu)
 
         # Draw squares/rectangles
-        self.drawSquaresOption = QAction('Draw Squares', self)
+        self.drawSquaresOption = QAction(u'사각형 그리기', self)
         self.drawSquaresOption.setShortcut('Ctrl+Shift+R')
         self.drawSquaresOption.setCheckable(True)
         self.drawSquaresOption.setChecked(settings.get(SETTING_DRAW_SQUARE, False))
@@ -361,15 +363,15 @@ class MainWindow(QMainWindow, WindowMixin):
                               onShapesPresent=(saveAs, hideAll, showAll))
 
         self.menus = struct(
-            file=self.menu('&File'),
-            edit=self.menu('&Edit'),
-            view=self.menu('&View'),
-            help=self.menu('&Help'),
-            recentFiles=QMenu('Open &Recent'),
+            file=self.menu(u'파일'),
+            edit=self.menu(u'편집'),
+            view=self.menu(u'보기'),
+            help=self.menu(u'도움말'),
+            recentFiles=QMenu(u'최근에 열어본 파일'),
             labelList=labelMenu)
 
         # Auto saving : Enable auto saving if pressing next
-        self.autoSaving = QAction("Auto Saving", self)
+        self.autoSaving = QAction(u"자동 저장", self)
         self.autoSaving.setCheckable(True)
         self.autoSaving.setChecked(settings.get(SETTING_AUTO_SAVE, False))
         # Sync single class mode from PR#106
@@ -379,7 +381,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.singleClassMode.setChecked(settings.get(SETTING_SINGLE_CLASS, False))
         self.lastLabel = None
         # Add option to enable/disable labels being painted at the top of bounding boxes
-        self.paintLabelsOption = QAction("Paint Labels", self)
+        self.paintLabelsOption = QAction(u"레이블 색상", self)
         self.paintLabelsOption.setShortcut("Ctrl+Shift+P")
         self.paintLabelsOption.setCheckable(True)
         self.paintLabelsOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
@@ -402,10 +404,10 @@ class MainWindow(QMainWindow, WindowMixin):
         # Custom context menu for the canvas widget:
         addActions(self.canvas.menus[0], self.actions.beginnerContext)
         addActions(self.canvas.menus[1], (
-            action('&Copy here', self.copyShape),
-            action('&Move here', self.moveShape)))
+            action(u'여기로 복사', self.copyShape),
+            action(u'여기로 이동', self.moveShape)))
 
-        self.tools = self.toolbar('Tools')
+        self.tools = self.toolbar(u'도구')
         self.actions.beginner = (
             open, opendir, changeSavedir, openNextImg, openPrevImg, verify, save, save_format, None, create, copy, delete, None,
             zoomIn, zoom, zoomOut, fitWindow, fitWidth)
@@ -415,7 +417,7 @@ class MainWindow(QMainWindow, WindowMixin):
             createMode, editMode, None,
             hideAll, showAll)
 
-        self.statusBar().showMessage('%s started.' % __appname__)
+        self.statusBar().showMessage(u'%s 시작.' % __appname__)
         self.statusBar().show()
 
         # Application state.
@@ -446,7 +448,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.lastOpenDir = ustr(settings.get(SETTING_LAST_OPEN_DIR, None))
         if self.defaultSaveDir is None and saveDir is not None and os.path.exists(saveDir):
             self.defaultSaveDir = saveDir
-            self.statusBar().showMessage('%s started. Annotation will be saved to %s' %
+            self.statusBar().showMessage(u'%s 시작됨. 레이블 정보파일은 %s 이곳에 저장됩니다.' %
                                          (__appname__, self.defaultSaveDir))
             self.statusBar().show()
 
@@ -506,16 +508,16 @@ class MainWindow(QMainWindow, WindowMixin):
             self.usingYoloFormat = False
             LabelFile.suffix = XML_EXT
 
-        elif save_format == FORMAT_YOLO:
-            self.actions.save_format.setText(FORMAT_YOLO)
-            self.actions.save_format.setIcon(newIcon("format_yolo"))
-            self.usingPascalVocFormat = False
-            self.usingYoloFormat = True
-            LabelFile.suffix = TXT_EXT
+        # elif save_format == FORMAT_YOLO:
+        #     self.actions.save_format.setText(FORMAT_YOLO)
+        #     self.actions.save_format.setIcon(newIcon("format_yolo"))
+        #     self.usingPascalVocFormat = False
+        #     self.usingYoloFormat = True
+        #     LabelFile.suffix = TXT_EXT
 
     def change_format(self):
         if self.usingPascalVocFormat: self.set_format(FORMAT_YOLO)
-        elif self.usingYoloFormat: self.set_format(FORMAT_PASCALVOC)
+        # elif self.usingYoloFormat: self.set_format(FORMAT_PASCALVOC)
 
     def noShapes(self):
         return not self.itemsToShapes
@@ -620,8 +622,8 @@ class MainWindow(QMainWindow, WindowMixin):
         subprocess.Popen(self.screencastViewer + [self.screencast])
 
     def showInfoDialog(self):
-        msg = u'Name:{0} \nApp Version:{1} \n{2} '.format(__appname__, __version__, sys.version_info)
-        QMessageBox.information(self, u'Information', msg)
+        msg = u'이름:{0} \n프로그램 버전:{1} \n{2} '.format(__appname__, __version__, sys.version_info)
+        QMessageBox.information(self, u'정보', msg)
 
     def createShape(self):
         assert self.beginner()
@@ -633,7 +635,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.editMode.setEnabled(not drawing)
         if not drawing and self.beginner():
             # Cancel creation.
-            print('Cancel creation.')
+            print(u'생성 취소')
             self.canvas.setEditing(True)
             self.canvas.restoreCursor()
             self.actions.create.setEnabled(True)
@@ -800,18 +802,18 @@ class MainWindow(QMainWindow, WindowMixin):
                 print ('Img: ' + self.filePath + ' -> Its xml: ' + annotationFilePath)
                 self.labelFile.savePascalVocFormat(annotationFilePath, shapes, self.filePath, self.imageData,
                                                    self.lineColor.getRgb(), self.fillColor.getRgb())
-            elif self.usingYoloFormat is True:
-                if annotationFilePath[-4:] != ".txt":
-                    annotationFilePath += TXT_EXT
-                print ('Img: ' + self.filePath + ' -> Its txt: ' + annotationFilePath)
-                self.labelFile.saveYoloFormat(annotationFilePath, shapes, self.filePath, self.imageData, self.labelHist,
-                                                   self.lineColor.getRgb(), self.fillColor.getRgb())
+            # elif self.usingYoloFormat is True:
+            #     if annotationFilePath[-4:] != ".txt":
+            #         annotationFilePath += TXT_EXT
+            #     print ('Img: ' + self.filePath + ' -> Its txt: ' + annotationFilePath)
+            #     self.labelFile.saveYoloFormat(annotationFilePath, shapes, self.filePath, self.imageData, self.labelHist,
+            #                                        self.lineColor.getRgb(), self.fillColor.getRgb())
             else:
                 self.labelFile.save(annotationFilePath, shapes, self.filePath, self.imageData,
                                     self.lineColor.getRgb(), self.fillColor.getRgb())
             return True
         except LabelFileError as e:
-            self.errorMessage(u'Error saving label data', u'<b>%s</b>' % e)
+            self.errorMessage(u'레이블 데이터 저장 오류', u'<b>%s</b>' % e)
             return False
 
     def copySelectedShape(self):
@@ -983,11 +985,11 @@ class MainWindow(QMainWindow, WindowMixin):
                 try:
                     self.labelFile = LabelFile(unicodeFilePath)
                 except LabelFileError as e:
-                    self.errorMessage(u'Error opening file',
+                    self.errorMessage(u'파일 열기 실패',
                                       (u"<p><b>%s</b></p>"
                                        u"<p>Make sure <i>%s</i> is a valid label file.")
                                       % (e, unicodeFilePath))
-                    self.status("Error reading %s" % unicodeFilePath)
+                    self.status(u"읽기 실패 :  %s" % unicodeFilePath)
                     return False
                 self.imageData = self.labelFile.imageData
                 self.lineColor = QColor(*self.labelFile.lineColor)
@@ -1002,11 +1004,11 @@ class MainWindow(QMainWindow, WindowMixin):
 
             image = QImage.fromData(self.imageData)
             if image.isNull():
-                self.errorMessage(u'Error opening file',
+                self.errorMessage(u'파일 열기 실패',
                                   u"<p>Make sure <i>%s</i> is a valid image file." % unicodeFilePath)
-                self.status("Error reading %s" % unicodeFilePath)
+                self.status(u"읽기 실패 : %s" % unicodeFilePath)
                 return False
-            self.status("Loaded %s" % os.path.basename(unicodeFilePath))
+            self.status(u"로딩 %s" % os.path.basename(unicodeFilePath))
             self.image = image
             self.filePath = unicodeFilePath
             self.canvas.loadPixmap(QPixmap.fromImage(image))
@@ -1025,22 +1027,22 @@ class MainWindow(QMainWindow, WindowMixin):
                 basename = os.path.basename(
                     os.path.splitext(self.filePath)[0])
                 xmlPath = os.path.join(self.defaultSaveDir, basename + XML_EXT)
-                txtPath = os.path.join(self.defaultSaveDir, basename + TXT_EXT)
+                # txtPath = os.path.join(self.defaultSaveDir, basename + TXT_EXT)
 
                 """Annotation file priority:
                 PascalXML > YOLO
                 """
                 if os.path.isfile(xmlPath):
                     self.loadPascalXMLByFilename(xmlPath)
-                elif os.path.isfile(txtPath):
-                    self.loadYOLOTXTByFilename(txtPath)
+                # elif os.path.isfile(txtPath):
+                #     self.loadYOLOTXTByFilename(txtPath)
             else:
                 xmlPath = os.path.splitext(filePath)[0] + XML_EXT
-                txtPath = os.path.splitext(filePath)[0] + TXT_EXT
+                # txtPath = os.path.splitext(filePath)[0] + TXT_EXT
                 if os.path.isfile(xmlPath):
                     self.loadPascalXMLByFilename(xmlPath)
-                elif os.path.isfile(txtPath):
-                    self.loadYOLOTXTByFilename(txtPath)
+                # elif os.path.isfile(txtPath):
+                #     self.loadYOLOTXTByFilename(txtPath)
 
             self.setWindowTitle(__appname__ + ' ' + filePath)
 
@@ -1144,27 +1146,27 @@ class MainWindow(QMainWindow, WindowMixin):
             path = '.'
 
         dirpath = ustr(QFileDialog.getExistingDirectory(self,
-                                                       '%s - Save annotations to the directory' % __appname__, path,  QFileDialog.ShowDirsOnly
+                                                       u'%s - 폴더에 레이블 정보 파일 저장' % __appname__, path,  QFileDialog.ShowDirsOnly
                                                        | QFileDialog.DontResolveSymlinks))
 
         if dirpath is not None and len(dirpath) > 1:
             self.defaultSaveDir = dirpath
 
-        self.statusBar().showMessage('%s . Annotation will be saved to %s' %
-                                     ('Change saved folder', self.defaultSaveDir))
+        self.statusBar().showMessage(u'%s . %s 경로에 레이블 정보파일이 저장됩니다.' %
+                                     (u'저장 경로 변경', self.defaultSaveDir))
         self.statusBar().show()
 
     def openAnnotationDialog(self, _value=False):
         if self.filePath is None:
-            self.statusBar().showMessage('Please select image first')
+            self.statusBar().showMessage(u'이미지를 먼저 선택해주세요.')
             self.statusBar().show()
             return
 
         path = os.path.dirname(ustr(self.filePath))\
             if self.filePath else '.'
         if self.usingPascalVocFormat:
-            filters = "Open Annotation XML file (%s)" % ' '.join(['*.xml'])
-            filename = ustr(QFileDialog.getOpenFileName(self,'%s - Choose a xml file' % __appname__, path, filters))
+            filters = u"영역 설정 파일 열기 (%s)" % ' '.join(['*.xml'])
+            filename = ustr(QFileDialog.getOpenFileName(self, u'%s - xml 파일 선택' % __appname__, path, filters))
             if filename:
                 if isinstance(filename, (tuple, list)):
                     filename = filename[0]
@@ -1181,7 +1183,7 @@ class MainWindow(QMainWindow, WindowMixin):
             defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
 
         targetDirPath = ustr(QFileDialog.getExistingDirectory(self,
-                                                     '%s - Open Directory' % __appname__, defaultOpenDirPath,
+                                                     u'%s - 폴더 열기' % __appname__, defaultOpenDirPath,
                                                      QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks))
         self.importDirImages(targetDirPath)
 
@@ -1194,7 +1196,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.dirname = dirpath
         self.filePath = None
         self.fileListWidget.clear()
-        self.mImgList = self.scanAllImages(dirpath)
+        self.mImgList = self.scanAllImages(ustr(dirpath))
         self.openNextImg()
         for imgPath in self.mImgList:
             item = QListWidgetItem(imgPath)
@@ -1275,8 +1277,8 @@ class MainWindow(QMainWindow, WindowMixin):
             return
         path = os.path.dirname(ustr(self.filePath)) if self.filePath else '.'
         formats = ['*.%s' % fmt.data().decode("ascii").lower() for fmt in QImageReader.supportedImageFormats()]
-        filters = "Image & Label files (%s)" % ' '.join(formats + ['*%s' % LabelFile.suffix])
-        filename = QFileDialog.getOpenFileName(self, '%s - Choose Image or Label file' % __appname__, path, filters)
+        filters = u"이미지 & 영역 파일 (%s)" % ' '.join(formats + ['*%s' % LabelFile.suffix])
+        filename = QFileDialog.getOpenFileName(self, u'%s - 이미지 또는 영역 파일 선택' % __appname__, path, filters)
         if filename:
             if isinstance(filename, (tuple, list)):
                 filename = filename[0]
@@ -1298,11 +1300,11 @@ class MainWindow(QMainWindow, WindowMixin):
                            else self.saveFileDialog())
 
     def saveFileAs(self, _value=False):
-        assert not self.image.isNull(), "cannot save empty image"
+        assert not self.image.isNull(), u"빈 이미지는 저장할 수 없습니다."
         self._saveFile(self.saveFileDialog())
 
     def saveFileDialog(self):
-        caption = '%s - Choose File' % __appname__
+        caption = u'%s - 파일 선택' % __appname__
         filters = 'File (*%s)' % LabelFile.suffix
         openDialogPath = self.currentPath()
         dlg = QFileDialog(self, caption, openDialogPath, filters)
@@ -1319,7 +1321,7 @@ class MainWindow(QMainWindow, WindowMixin):
     def _saveFile(self, annotationFilePath):
         if annotationFilePath and self.saveLabels(annotationFilePath):
             self.setClean()
-            self.statusBar().showMessage('Saved to  %s' % annotationFilePath)
+            self.statusBar().showMessage(u'%s 경로에 저장되었습니다.' % annotationFilePath)
             self.statusBar().show()
 
     def closeFile(self, _value=False):
@@ -1353,7 +1355,7 @@ class MainWindow(QMainWindow, WindowMixin):
         return os.path.dirname(self.filePath) if self.filePath else '.'
 
     def chooseColor1(self):
-        color = self.colorDialog.getColor(self.lineColor, u'Choose line color',
+        color = self.colorDialog.getColor(self.lineColor, u'라인 색상 선택',
                                           default=DEFAULT_LINE_COLOR)
         if color:
             self.lineColor = color
@@ -1370,7 +1372,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 action.setEnabled(False)
 
     def chshapeLineColor(self):
-        color = self.colorDialog.getColor(self.lineColor, u'Choose line color',
+        color = self.colorDialog.getColor(self.lineColor, u'라인 색상 선택',
                                           default=DEFAULT_LINE_COLOR)
         if color:
             self.canvas.selectedShape.line_color = color
@@ -1378,7 +1380,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.setDirty()
 
     def chshapeFillColor(self):
-        color = self.colorDialog.getColor(self.fillColor, u'Choose fill color',
+        color = self.colorDialog.getColor(self.fillColor, u'채우기 색상 선택',
                                           default=DEFAULT_FILL_COLOR)
         if color:
             self.canvas.selectedShape.fill_color = color
@@ -1417,18 +1419,18 @@ class MainWindow(QMainWindow, WindowMixin):
         self.loadLabels(shapes)
         self.canvas.verified = tVocParseReader.verified
 
-    def loadYOLOTXTByFilename(self, txtPath):
-        if self.filePath is None:
-            return
-        if os.path.isfile(txtPath) is False:
-            return
+    # def loadYOLOTXTByFilename(self, txtPath):
+    #     if self.filePath is None:
+    #         return
+    #     if os.path.isfile(txtPath) is False:
+    #         return
 
-        self.set_format(FORMAT_YOLO)
-        tYoloParseReader = YoloReader(txtPath, self.image)
-        shapes = tYoloParseReader.getShapes()
-        print (shapes)
-        self.loadLabels(shapes)
-        self.canvas.verified = tYoloParseReader.verified
+    #     self.set_format(FORMAT_YOLO)
+    #     tYoloParseReader = YoloReader(txtPath, self.image)
+    #     shapes = tYoloParseReader.getShapes()
+    #     print (shapes)
+    #     self.loadLabels(shapes)
+    #     self.canvas.verified = tYoloParseReader.verified
 
     def togglePaintLabelsOption(self):
         paintLabelsOptionChecked = self.paintLabelsOption.isChecked()
